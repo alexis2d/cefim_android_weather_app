@@ -5,4 +5,5 @@
     <string name="city_desc">Ensoleillé</string>
     <string name="city_temp">26°C</string>
     <string name="favorite">Favoris</string>
+    <string name="no_connexion">Pas de connexion Internet.</string>
 </resources>

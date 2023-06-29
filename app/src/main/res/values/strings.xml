@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Weather App</string>
     <string name="city_name">Tours</string>
-    <string name="city_desc">On est là</string>
+    <string name="city_desc">Sunny</string>
     <string name="city_temp">26°C</string>
+    <string name="favorite">Favorite</string>
 </resources>

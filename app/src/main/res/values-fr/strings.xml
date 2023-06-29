@@ -4,6 +4,8 @@
     <string name="city_name">Tours</string>
     <string name="city_desc">Ensoleillé</string>
     <string name="city_temp">26°C</string>
-    <string name="favorite">Favoris</string>
+    <string name="button_first">Premier</string>
+    <string name="button_second">Deuxième</string>
+    <string name="button_favorite">Favoris</string>
     <string name="no_connexion">Pas de connexion Internet.</string>
 </resources>

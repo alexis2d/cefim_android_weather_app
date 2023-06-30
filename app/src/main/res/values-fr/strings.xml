@@ -8,4 +8,7 @@
     <string name="button_second">Deuxième</string>
     <string name="button_favorite">Favoris</string>
     <string name="no_connexion">Pas de connexion Internet.</string>
+    <string name="title_activity_favorite">Favoris</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="edit_text_message_placeholder">Votre message…</string>
 </resources>

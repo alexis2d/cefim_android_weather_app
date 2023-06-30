@@ -11,12 +11,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import fr.alexis2d.weatherapp.databinding.ActivityFavoriteBinding;
 
 public class FavoriteActivity extends AppCompatActivity {
 
     private ActivityFavoriteBinding binding;
+    private TextView mMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,11 @@ public class FavoriteActivity extends AppCompatActivity {
 
         binding = ActivityFavoriteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Bundle extras = getIntent().getExtras();
+        mMessage = findViewById(R.id.message);
+        Log.d("TAG:Message", extras.getString("edit_text_message","Message."));
+        mMessage.setText("Message : ".concat(extras.getString("edit_text_message","Message.")));
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);

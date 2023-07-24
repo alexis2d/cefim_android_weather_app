@@ -12,4 +12,7 @@
     <string name="ClickOn">%1$s has been pressed</string>
     <string name="message">Your Message</string>
     <string name="recover_message">Message : %1$s</string>
+    <string name="yes">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_city">Add a city</string>
 </resources>

@@ -13,4 +13,7 @@
     <string name="ClickOn">Clic sur %1$s</string>
     <string name="message">Votre message</string>
     <string name="recover_message">Message : %1$s</string>
+    <string name="yes">OK</string>
+    <string name="cancel">Retour</string>
+    <string name="add_city">Ajouter une ville</string>
 </resources>

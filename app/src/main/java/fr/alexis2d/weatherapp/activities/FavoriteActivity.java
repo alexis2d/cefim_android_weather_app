@@ -1,6 +1,8 @@
 package fr.alexis2d.weatherapp.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -13,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,12 +52,28 @@ public class FavoriteActivity extends AppCompatActivity {
         CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
         toolBarLayout.setTitle(getTitle());
 
-        FloatingActionButton fab = binding.fab;
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton searchButton = binding.searchButton;
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_add_favorite, null);
+                builder.setView(v);
+
+                final EditText editTextCity = v.findViewById(R.id.edit_text_dialog_city);
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (editTextCity.getText().toString().length() > 0) {
+                            updateWeatherDataCityName(editTextCity.getText().toString());
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                builder.create().show();
             }
         });
 
@@ -62,6 +82,14 @@ public class FavoriteActivity extends AppCompatActivity {
         City city2 = new City("New York", "Ensoleillé", "22°C", R.drawable.weather_sunny_grey);
         City city3 = new City("Paris", "Nuageux", "24°C", R.drawable.weather_foggy_grey);
         City city4 = new City("Toulouse", "Pluies modérées", "20°C", R.drawable.weather_rainy_grey);
+        mCities.add(city1);
+        mCities.add(city2);
+        mCities.add(city3);
+        mCities.add(city4);
+        mCities.add(city1);
+        mCities.add(city2);
+        mCities.add(city3);
+        mCities.add(city4);
         mCities.add(city1);
         mCities.add(city2);
         mCities.add(city3);
@@ -76,6 +104,13 @@ public class FavoriteActivity extends AppCompatActivity {
 
         mAdapter = new FavoriteAdapter(mContext, mCities);
         mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    public void updateWeatherDataCityName(final String cityName) {
+        City city = new City(cityName, "Ensoleillé", "28°C", R.drawable.weather_sunny_grey);
+        mCities.add(city);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

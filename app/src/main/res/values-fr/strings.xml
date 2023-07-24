@@ -16,4 +16,5 @@
     <string name="yes">OK</string>
     <string name="cancel">Retour</string>
     <string name="add_city">Ajouter une ville</string>
+    <string name="del_city">Supprimer une ville</string>
 </resources>

@@ -4,7 +4,7 @@
     tools:context=".activities.FavoriteActivity"
     android:layout_width="match_parent"
     android:layout_height="88dp"
-
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
     <LinearLayout android:layout_height="match_parent"

@@ -1,7 +1,8 @@
 package fr.alexis2d.weatherapp.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     // Classe holder qui contient la vue d’un item
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public City mCity;
         TextView mTextViewCity;
         ImageView mImageViewWeatherIcon;
         TextView mTextViewTemperature;
@@ -36,12 +38,37 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         public ViewHolder(View view) {
             super(view);
+            view.setOnLongClickListener(mOnLongClickListener);
+            view.setTag(this);
             mTextViewCity = view.findViewById(R.id.text_view_item_city_name);
             mImageViewWeatherIcon = view.findViewById(R.id.image_view_item_picture);
             mTextViewTemperature = view.findViewById(R.id.text_view_item_temperature);
             mTextViewDescription = view.findViewById(R.id.text_view_item_description);
         }
     }
+
+    private final View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            ViewHolder holder = (ViewHolder) v.getTag();
+            final City city = holder.mCity;
+            final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(R.string.del_city);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    mCities.remove(city);
+                    notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+
+            builder.create().show();
+            return false;
+        }
+    };
 
     @NonNull
     @Override
@@ -53,6 +80,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         City city = mCities.get(position);
+        holder.mCity = city;
         holder.mTextViewCity.setText(city.mName);
         holder.mTextViewTemperature.setText(city.mTemperature);
         holder.mTextViewDescription.setText(city.mDescription);

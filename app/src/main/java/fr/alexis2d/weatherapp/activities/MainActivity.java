@@ -1,4 +1,4 @@
-package fr.alexis2d.weatherapp;
+package fr.alexis2d.weatherapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import fr.alexis2d.weatherapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         mTextViewCityName = findViewById(R.id.text_view_city_name);
         mTextViewNoConnexion = findViewById(R.id.text_no_connexion);
         mButtonFavorite = findViewById(R.id.button_favorite);
-        mEditTextMessage = findViewById(R.id.edit_text_message);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButtonFavorite(View v) {
         Intent intent = new Intent(this, FavoriteActivity.class);
-        intent.putExtra("edit_text_message",String.valueOf(mEditTextMessage.getText()));
         startActivity(intent);
     }
 

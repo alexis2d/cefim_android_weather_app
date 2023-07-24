@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.FavoriteActivity"
+    android:layout_width="match_parent"
+    android:layout_height="88dp"
+
+    android:orientation="horizontal">
+
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_item_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="City"/>
+
+        <TextView
+            android:id="@+id/text_view_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Description"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image_view_item_picture"
+            android:layout_height="60dp"
+            android:layout_width="60dp"
+            android:src="@drawable/weather_cloudy_white" />
+
+        <TextView
+            android:id="@+id/text_view_item_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Temperature" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

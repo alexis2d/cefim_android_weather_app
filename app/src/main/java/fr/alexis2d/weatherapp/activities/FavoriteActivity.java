@@ -1,5 +1,6 @@
-package fr.alexis2d.weatherapp;
+package fr.alexis2d.weatherapp.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -8,16 +9,28 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import fr.alexis2d.weatherapp.R;
+import fr.alexis2d.weatherapp.adapters.FavoriteAdapter;
 import fr.alexis2d.weatherapp.databinding.ActivityFavoriteBinding;
+import fr.alexis2d.weatherapp.models.City;
 
 public class FavoriteActivity extends AppCompatActivity {
 
     private ActivityFavoriteBinding binding;
+    private ArrayList<City> mCities;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Context mContext;
     private TextView mMessage;
 
     @Override
@@ -29,9 +42,6 @@ public class FavoriteActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Bundle extras = getIntent().getExtras();
-        mMessage = findViewById(R.id.message);
-        Log.d("TAG:Message", extras.getString("edit_text_message","Message."));
-        mMessage.setText("Message : ".concat(extras.getString("edit_text_message","Message.")));
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
@@ -46,6 +56,26 @@ public class FavoriteActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mCities = new ArrayList<>();
+        City city1 = new City("Montréal", "Légères pluies", "22°C", R.drawable.weather_rainy_grey);
+        City city2 = new City("New York", "Ensoleillé", "22°C", R.drawable.weather_sunny_grey);
+        City city3 = new City("Paris", "Nuageux", "24°C", R.drawable.weather_foggy_grey);
+        City city4 = new City("Toulouse", "Pluies modérées", "20°C", R.drawable.weather_rainy_grey);
+        mCities.add(city1);
+        mCities.add(city2);
+        mCities.add(city3);
+        mCities.add(city4);
+
+        mContext = this;
+
+        mRecyclerView = binding.includeMyRecyclerView.myRecyclerView;
+
+        mLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new FavoriteAdapter(mContext, mCities);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

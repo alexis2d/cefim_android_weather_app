@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Application de Météo</string>
-    <string name="city_name">Tours</string>
+    <string name="app_name">Application de la météo</string>
+    <string name="city_name">Nouveau York</string>
     <string name="city_desc">Ensoleillé</string>
-    <string name="city_temp">26°C</string>
-    <string name="button_first">Premier</string>
-    <string name="button_second">Deuxième</string>
-    <string name="button_favorite">Favoris</string>
-    <string name="no_connexion">Pas de connexion Internet.</string>
-    <string name="title_activity_favorite">Favoris</string>
-    <string name="action_settings">Paramètres</string>
-    <string name="edit_text_message_placeholder">Votre message…</string>
+    <string name="city_temp">24°C</string>
+    <string name="favorite">Favoris</string>
+    <string name="no_internet">Pas de connexion Internet</string>
+    <string name="onclick1">Clic sur bouton 1</string>
+    <string name="onclick2">Clic sur bouton 2</string>
+    <string name="bouton_1">Bouton 1</string>
+    <string name="bouton_2">Bouton 2</string>
+    <string name="ClickOn">Clic sur %1$s</string>
+    <string name="message">Votre message</string>
+    <string name="recover_message">Message : %1$s</string>
 </resources>

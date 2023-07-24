@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/no_connexion"
+        android:text="@string/no_internet"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_size_secondary"/>
 
@@ -28,7 +28,7 @@
             android:orientation="vertical"
             android:padding="16dp"
             app:layoutDescription="@xml/activity_main_scene"
-            tools:context=".MainActivity">
+            tools:context=".activities.MainActivity">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -80,20 +80,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="50dp">
-
-            <EditText
-                android:id="@+id/edit_text_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/edit_text_message_placeholder" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <Button
@@ -109,6 +95,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rect_button"
-        android:text="@string/button_favorite"/>
+        android:text="@string/favorite"/>
 
 </RelativeLayout>

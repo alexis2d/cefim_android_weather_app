@@ -61,16 +61,12 @@ public class FavoriteActivity extends AppCompatActivity {
                 builder.setView(v);
 
                 final EditText editTextCity = v.findViewById(R.id.edit_text_dialog_city);
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (editTextCity.getText().toString().length() > 0) {
-                            updateWeatherDataCityName(editTextCity.getText().toString());
-                        }
+                builder.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+                    if (editTextCity.getText().toString().length() > 0) {
+                        updateWeatherDataCityName(editTextCity.getText().toString());
                     }
                 });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
                 });
 
                 builder.create().show();
@@ -82,14 +78,6 @@ public class FavoriteActivity extends AppCompatActivity {
         City city2 = new City("New York", "Ensoleillé", "22°C", R.drawable.weather_sunny_grey);
         City city3 = new City("Paris", "Nuageux", "24°C", R.drawable.weather_foggy_grey);
         City city4 = new City("Toulouse", "Pluies modérées", "20°C", R.drawable.weather_rainy_grey);
-        mCities.add(city1);
-        mCities.add(city2);
-        mCities.add(city3);
-        mCities.add(city4);
-        mCities.add(city1);
-        mCities.add(city2);
-        mCities.add(city3);
-        mCities.add(city4);
         mCities.add(city1);
         mCities.add(city2);
         mCities.add(city3);
@@ -110,7 +98,7 @@ public class FavoriteActivity extends AppCompatActivity {
     public void updateWeatherDataCityName(final String cityName) {
         City city = new City(cityName, "Ensoleillé", "28°C", R.drawable.weather_sunny_grey);
         mCities.add(city);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemInserted(mCities.size() - 1);
     }
 
     @Override

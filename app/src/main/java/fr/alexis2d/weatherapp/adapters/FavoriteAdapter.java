@@ -16,21 +16,23 @@ import java.util.ArrayList;
 
 import fr.alexis2d.weatherapp.models.City;
 import fr.alexis2d.weatherapp.R;
+import fr.alexis2d.weatherapp.models.CityApi;
+import fr.alexis2d.weatherapp.utils.Util;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<City> mCities;
+    private ArrayList<CityApi> mCitiesApi;
 
     // Constructor
-    public FavoriteAdapter(Context mContext, ArrayList<City> mCities) {
+    public FavoriteAdapter(Context mContext, ArrayList<CityApi> mCitiesApi) {
         this.mContext = mContext;
-        this.mCities = mCities;
+        this.mCitiesApi = mCitiesApi;
     }
 
     // Classe holder qui contient la vue d’un item
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public City mCity;
+        public CityApi mCityApi;
         TextView mTextViewCity;
         ImageView mImageViewWeatherIcon;
         TextView mTextViewTemperature;
@@ -51,12 +53,12 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         @Override
         public boolean onLongClick(View v) {
             ViewHolder holder = (ViewHolder) v.getTag();
-            final City city = holder.mCity;
+            final CityApi city = holder.mCityApi;
             final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(R.string.del_city);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    mCities.remove(city);
+                    mCitiesApi.remove(city);
                     notifyDataSetChanged();
                 }
             });
@@ -79,16 +81,19 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        City city = mCities.get(position);
-        holder.mCity = city;
-        holder.mTextViewCity.setText(city.mName);
-        holder.mTextViewTemperature.setText(city.mTemperature);
-        holder.mTextViewDescription.setText(city.mDescription);
-        holder.mImageViewWeatherIcon.setImageResource(city.mWeatherIcon);
+        CityApi cityApi = mCitiesApi.get(position);
+        holder.mCityApi = cityApi;
+        holder.mTextViewCity.setText(cityApi.getName());
+        holder.mTextViewDescription.setText(cityApi.getWeather().get(0).getDescription());
+        holder.mTextViewTemperature.setText(Double.toString(cityApi.getMain().getTemp()));
+        int actualId = cityApi.getWeather().get(0).getId();
+        long sunrise = cityApi.getSys().getSunrise();
+        long sunset = cityApi.getSys().getSunset();
+        holder.mImageViewWeatherIcon.setImageResource(Util.setWeatherIcon(actualId));
     }
 
     @Override
     public int getItemCount() {
-        return mCities.size();
+        return mCitiesApi.size();
     }
 }

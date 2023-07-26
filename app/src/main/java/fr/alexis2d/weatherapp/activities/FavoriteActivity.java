@@ -24,13 +24,20 @@ import java.util.ArrayList;
 
 import fr.alexis2d.weatherapp.R;
 import fr.alexis2d.weatherapp.adapters.FavoriteAdapter;
+import fr.alexis2d.weatherapp.clients.ClientSingletonWeather;
 import fr.alexis2d.weatherapp.databinding.ActivityFavoriteBinding;
 import fr.alexis2d.weatherapp.models.City;
+import fr.alexis2d.weatherapp.models.CityApi;
+import fr.alexis2d.weatherapp.utils.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FavoriteActivity extends AppCompatActivity {
 
     private ActivityFavoriteBinding binding;
     private ArrayList<City> mCities;
+    private ArrayList<CityApi> mCitiesApi;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -73,16 +80,6 @@ public class FavoriteActivity extends AppCompatActivity {
             }
         });
 
-        mCities = new ArrayList<>();
-        City city1 = new City("Montréal", "Légères pluies", "22°C", R.drawable.weather_rainy_grey);
-        City city2 = new City("New York", "Ensoleillé", "22°C", R.drawable.weather_sunny_grey);
-        City city3 = new City("Paris", "Nuageux", "24°C", R.drawable.weather_foggy_grey);
-        City city4 = new City("Toulouse", "Pluies modérées", "20°C", R.drawable.weather_rainy_grey);
-        mCities.add(city1);
-        mCities.add(city2);
-        mCities.add(city3);
-        mCities.add(city4);
-
         mContext = this;
 
         mRecyclerView = binding.includeMyRecyclerView.myRecyclerView;
@@ -90,15 +87,39 @@ public class FavoriteActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new FavoriteAdapter(mContext, mCities);
+        mCitiesApi = new ArrayList<CityApi>();
+
+        mAdapter = new FavoriteAdapter(mContext, mCitiesApi);
         mRecyclerView.setAdapter(mAdapter);
 
     }
 
     public void updateWeatherDataCityName(final String cityName) {
-        City city = new City(cityName, "Ensoleillé", "28°C", R.drawable.weather_sunny_grey);
-        mCities.add(city);
-        mAdapter.notifyItemInserted(mCities.size() - 1);
+        if (Util.isActiveNetwork(mContext)) {
+
+            Call<CityApi> call = ClientSingletonWeather.getClient().getCityApi(cityName, ClientSingletonWeather.API_KEY);
+
+            call.enqueue(new Callback<CityApi>() {
+                @Override
+                public void onResponse(Call<CityApi> call, Response<CityApi> response) {
+                    if (response.isSuccessful()) {
+                        CityApi cityApi = response.body();
+                        mCitiesApi.add(cityApi);
+                        mAdapter.notifyItemInserted(mCitiesApi.size() - 1);
+                        Log.d("GetCity", "Ajout à la liste");
+                    } else {
+                        // Traitement des erreurs
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CityApi> call, Throwable t) {
+                    Log.d("GetCity", "Error");
+                }
+            });
+        } else {
+            Log.d("GetCity", "No connection");
+        }
     }
 
     @Override

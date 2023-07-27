@@ -30,6 +30,16 @@
             app:layoutDescription="@xml/activity_main_scene"
             tools:context=".activities.MainActivity">
 
+            <TextView
+                android:id="@+id/text_view_no_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/no_location"
+                android:textSize="@dimen/text_size_primary" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +51,6 @@
                     android:id="@+id/text_view_city_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/city_name"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_primary" />
 
@@ -49,7 +58,6 @@
                     android:id="@+id/text_view_city_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/city_desc"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_secondary" />
 
@@ -65,15 +73,13 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:id="@+id/image_view_city_weather_icon"
-                    android:src="@drawable/weather_sunny_white" />
+                    android:id="@+id/image_view_city_weather_icon" />
 
                 <TextView
                     android:id="@+id/text_view_city_temperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="@string/city_temp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_tertiary" />
 
@@ -84,8 +90,20 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/button_get_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rect_button"
+        android:onClick="onClickButtonGetLocation"
+        android:text="@string/get_location" />
+
+    <Button
         android:id="@+id/button_favorite"
-        android:onClick="onClickButtonFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -96,6 +114,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rect_button"
-        android:text="@string/favorite"/>
+        android:onClick="onClickButtonFavorite"
+        android:text="@string/favorite" />
 
 </RelativeLayout>

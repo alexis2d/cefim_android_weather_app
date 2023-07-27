@@ -40,7 +40,6 @@ public class FavoriteActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Context mContext;
-    private TextView mMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +55,8 @@ public class FavoriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
         toolBarLayout.setTitle(getTitle());
+
+        mContext = this;
 
         FloatingActionButton searchButton = binding.searchButton;
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -77,8 +78,6 @@ public class FavoriteActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
-
-        mContext = this;
 
         mRecyclerView = binding.includeMyRecyclerView.myRecyclerView;
 

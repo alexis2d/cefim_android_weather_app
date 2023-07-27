@@ -5,6 +5,8 @@
     <string name="city_desc">Ensoleillé</string>
     <string name="city_temp">24°C</string>
     <string name="favorite">Favoris</string>
+    <string name="get_location">Géolocalisation</string>
+    <string name="no_location">Pas de géolocalisation</string>
     <string name="no_internet">Pas de connexion Internet</string>
     <string name="onclick1">Clic sur bouton 1</string>
     <string name="onclick2">Clic sur bouton 2</string>

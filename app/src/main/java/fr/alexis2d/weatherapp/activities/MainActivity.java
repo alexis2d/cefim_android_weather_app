@@ -1,9 +1,16 @@
 package fr.alexis2d.weatherapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -12,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +42,14 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private OkHttpClient mOkHttpClient;
+    private Context mContext;
+    private LocationManager mLocationManager;
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            // Récupération des données pour les coordonnées
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,61 +58,49 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
+        mContext = this;
+
         setContentView(binding.getRoot());
 
+        initApp();
+
+    }
+
+    private void initApp() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
+            Location location = getLocation();
             binding.textNoConnexion.setVisibility(View.GONE);
-
-            Call<CityApi> call = ClientSingletonWeather.getClient().getCityApiFromLatLon("47.390026","0.688891", ClientSingletonWeather.API_KEY);
-            call.enqueue(new Callback<CityApi>() {
-                @Override
-                public void onResponse(Call<CityApi> call, Response<CityApi> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            updateUi(response.body());
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CityApi> call, Throwable t) {
-
-                }
-            });
-
-            /*mOkHttpClient = new OkHttpClient();
-
-            Request request = new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?lat=47.390026&lon=0.688891&appid=01897e497239c8aff78d9b8538fb24ea&units=metric&lang=fr").build();
-            mOkHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.d("error",e.getMessage());
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        final String stringJson = response.body().string();
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                try {
-                                    updateUi(stringJson);
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        });
-                    }
-                }
-            });*/
+            if (location != null) {
+                getCityByLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+                binding.textViewNoLocation.setVisibility(View.GONE);
+            }
         } else {
             binding.layoutContent.setVisibility(View.GONE);
             binding.buttonFavorite.setVisibility(View.GONE);
             binding.textNoConnexion.setVisibility(View.VISIBLE);
         }
+    }
 
+    private void getCityByLocation(String lat, String lon) {
+        Call<CityApi> call = ClientSingletonWeather.getClient().getCityApiFromLatLon(lat, lon, ClientSingletonWeather.API_KEY);
+        call.enqueue(new Callback<CityApi>() {
+            @Override
+            public void onResponse(Call<CityApi> call, Response<CityApi> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        updateUi(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CityApi> call, Throwable t) {
+
+            }
+        });
     }
 
     public void onClickButtonFavorite(View v) {
@@ -105,11 +108,50 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickButtonGetLocation(View v) {
+        Location location = getLocation();
+        if (location != null) {
+            getCityByLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            binding.textViewNoLocation.setVisibility(View.GONE);
+        }
+    }
+
+    public Location getLocation() {
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = new String[]{
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+            };
+            ActivityCompat.requestPermissions(this, permissions, Util.REQUEST_CODE);
+            return null;
+        } else {
+            Log.d("location_test","test");
+            binding.buttonGetLocation.setVisibility(View.GONE);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+            return mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+    }
+
     public void updateUi(CityApi cityApi) {
         binding.textViewCityName.setText(cityApi.getName());
         binding.textViewCityDescription.setText(cityApi.getDescription());
         binding.textViewCityTemperature.setText(cityApi.getTemp());
         binding.imageViewCityWeatherIcon.setImageResource(Util.setWeatherIcon(cityApi.getActualId(),cityApi.getSunrise(),cityApi.getSunset()));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case Util.REQUEST_CODE :
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(mContext, "Ca passe ici", Toast.LENGTH_SHORT).show();
+                    binding.buttonGetLocation.setVisibility(View.GONE);
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override

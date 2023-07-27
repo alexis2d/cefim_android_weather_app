@@ -4,6 +4,8 @@
     <string name="city_desc">Sunny M</string>
     <string name="city_temp">75.2°F</string>
     <string name="favorite">Favorite</string>
+    <string name="get_location">Get your location</string>
+    <string name="no_location">No Location</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="onclick1">Click on button 1</string>
     <string name="onclick2">Click on button 2</string>

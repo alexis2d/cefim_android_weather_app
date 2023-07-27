@@ -22,10 +22,7 @@ import fr.alexis2d.weatherapp.R;
 import fr.alexis2d.weatherapp.models.CityApi;
 
 public class Util {
-
-    public final static String CITIES = "cities";
-    public static final String CITY = "city";
-    public static final String KEY_MESSAGE = "key_message";
+    public static final int REQUEST_CODE = 111;
     private static final String PREFS_NAME = "file_prefs";
     private static final String PREFS_FAVORITE_CITIES = "file_prefs_cities";
 

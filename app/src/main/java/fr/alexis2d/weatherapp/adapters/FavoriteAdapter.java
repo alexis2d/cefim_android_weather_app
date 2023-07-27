@@ -59,6 +59,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     mCitiesApi.remove(city);
+                    Util.saveFavouriteCities(mContext, mCitiesApi);
                     notifyDataSetChanged();
                 }
             });

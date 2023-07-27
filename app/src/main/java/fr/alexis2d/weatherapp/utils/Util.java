@@ -1,18 +1,61 @@
 package fr.alexis2d.weatherapp.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import fr.alexis2d.weatherapp.R;
+import fr.alexis2d.weatherapp.models.CityApi;
 
 public class Util {
 
     public final static String CITIES = "cities";
     public static final String CITY = "city";
     public static final String KEY_MESSAGE = "key_message";
+    private static final String PREFS_NAME = "file_prefs";
+    private static final String PREFS_FAVORITE_CITIES = "file_prefs_cities";
 
+    public static void saveFavouriteCities(Context context, ArrayList<CityApi> citiesApi) {
+        JSONArray jsonArrayCities = new JSONArray();
+        Gson gson = new Gson();
+        for (int i = 0; i < citiesApi.size(); i++) {
+            jsonArrayCities.put(gson.toJson(citiesApi));
+        }
+        SharedPreferences preferences = context.getSharedPreferences(Util.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Util.PREFS_FAVORITE_CITIES, jsonArrayCities.toString());
+        editor.apply();
+        Log.d("Favorites", String.valueOf(jsonArrayCities));
+    }
+
+    public static ArrayList<CityApi> initFavoriteCities(Context context){
+        ArrayList<CityApi> cities = new ArrayList<>();
+        SharedPreferences preferences = context.getSharedPreferences(Util.PREFS_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        try {
+            JSONArray jsonArray = new JSONArray(preferences.getString(Util.PREFS_FAVORITE_CITIES,""));
+            Log.d("Favorites", String.valueOf(jsonArray));
+            cities.addAll(Arrays.asList(gson.fromJson(jsonArray.getString(0),CityApi[].class)));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Favorites", cities.toString());
+        return cities;
+    }
 
     /*
     * Méthode qui initialise l'icon blanc présent dans la MainActivity

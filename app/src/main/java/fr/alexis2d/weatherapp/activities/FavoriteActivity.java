@@ -87,9 +87,10 @@ public class FavoriteActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mCitiesApi = new ArrayList<CityApi>();
+        mCitiesApi = Util.initFavoriteCities(mContext);
 
         mAdapter = new FavoriteAdapter(mContext, mCitiesApi);
+
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -106,6 +107,7 @@ public class FavoriteActivity extends AppCompatActivity {
                         CityApi cityApi = response.body();
                         mCitiesApi.add(cityApi);
                         mAdapter.notifyItemInserted(mCitiesApi.size() - 1);
+                        Util.saveFavouriteCities(mContext,mCitiesApi);
                         Log.d("GetCity", "Ajout à la liste");
                     } else {
                         // Traitement des erreurs

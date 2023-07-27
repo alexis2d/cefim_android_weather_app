@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import fr.alexis2d.weatherapp.models.City;
 import fr.alexis2d.weatherapp.R;
 import fr.alexis2d.weatherapp.models.CityApi;
 import fr.alexis2d.weatherapp.utils.Util;
@@ -85,12 +84,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         CityApi cityApi = mCitiesApi.get(position);
         holder.mCityApi = cityApi;
         holder.mTextViewCity.setText(cityApi.getName());
-        holder.mTextViewDescription.setText(cityApi.getWeather().get(0).getDescription());
-        holder.mTextViewTemperature.setText(Double.toString(cityApi.getMain().getTemp()));
-        int actualId = cityApi.getWeather().get(0).getId();
-        long sunrise = cityApi.getSys().getSunrise();
-        long sunset = cityApi.getSys().getSunset();
-        holder.mImageViewWeatherIcon.setImageResource(Util.setWeatherIcon(actualId));
+        holder.mTextViewDescription.setText(cityApi.getDescription());
+        holder.mTextViewTemperature.setText(cityApi.getTemp());
+        holder.mImageViewWeatherIcon.setImageResource(Util.setWeatherIcon(cityApi.getActualId()));
     }
 
     @Override

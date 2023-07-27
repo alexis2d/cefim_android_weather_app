@@ -26,7 +26,6 @@ import fr.alexis2d.weatherapp.R;
 import fr.alexis2d.weatherapp.adapters.FavoriteAdapter;
 import fr.alexis2d.weatherapp.clients.ClientSingletonWeather;
 import fr.alexis2d.weatherapp.databinding.ActivityFavoriteBinding;
-import fr.alexis2d.weatherapp.models.City;
 import fr.alexis2d.weatherapp.models.CityApi;
 import fr.alexis2d.weatherapp.utils.Util;
 import retrofit2.Call;
@@ -36,7 +35,6 @@ import retrofit2.Response;
 public class FavoriteActivity extends AppCompatActivity {
 
     private ActivityFavoriteBinding binding;
-    private ArrayList<City> mCities;
     private ArrayList<CityApi> mCitiesApi;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;

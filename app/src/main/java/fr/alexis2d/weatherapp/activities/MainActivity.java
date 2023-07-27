@@ -20,14 +20,16 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 
 import fr.alexis2d.weatherapp.R;
+import fr.alexis2d.weatherapp.clients.ClientSingletonWeather;
 import fr.alexis2d.weatherapp.databinding.ActivityFavoriteBinding;
 import fr.alexis2d.weatherapp.databinding.ActivityMainBinding;
-import fr.alexis2d.weatherapp.models.City;
-import okhttp3.Call;
-import okhttp3.Callback;
+import fr.alexis2d.weatherapp.models.CityApi;
+import fr.alexis2d.weatherapp.utils.Util;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,8 +50,25 @@ public class MainActivity extends AppCompatActivity {
 
         if (networkInfo != null && networkInfo.isConnected()) {
             binding.textNoConnexion.setVisibility(View.GONE);
-            Log.d("test", (String) binding.textNoConnexion.getText());
-            mOkHttpClient = new OkHttpClient();
+
+            Call<CityApi> call = ClientSingletonWeather.getClient().getCityApiFromLatLon("47.390026","0.688891", ClientSingletonWeather.API_KEY);
+            call.enqueue(new Callback<CityApi>() {
+                @Override
+                public void onResponse(Call<CityApi> call, Response<CityApi> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            updateUi(response.body());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CityApi> call, Throwable t) {
+
+                }
+            });
+
+            /*mOkHttpClient = new OkHttpClient();
 
             Request request = new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?lat=47.390026&lon=0.688891&appid=01897e497239c8aff78d9b8538fb24ea&units=metric&lang=fr").build();
             mOkHttpClient.newCall(request).enqueue(new Callback() {
@@ -72,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 }
-            });
+            });*/
         } else {
             binding.layoutContent.setVisibility(View.GONE);
             binding.buttonFavorite.setVisibility(View.GONE);
@@ -86,12 +105,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void updateUi(String stringJson) throws JSONException {
-        City city = new City(stringJson);
-        binding.textViewCityName.setText(city.mName);
-        binding.textViewCityDescription.setText(city.mDescription);
-        binding.textViewCityTemperature.setText(city.mTemperature);
-        binding.imageViewCityWeatherIcon.setImageResource(city.mWeatherIcon);
+    public void updateUi(CityApi cityApi) {
+        binding.textViewCityName.setText(cityApi.getName());
+        binding.textViewCityDescription.setText(cityApi.getDescription());
+        binding.textViewCityTemperature.setText(cityApi.getTemp());
+        binding.imageViewCityWeatherIcon.setImageResource(Util.setWeatherIcon(cityApi.getActualId(),cityApi.getSunrise(),cityApi.getSunset()));
     }
 
     @Override

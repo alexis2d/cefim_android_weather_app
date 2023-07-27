@@ -155,6 +155,20 @@ public class CityApi {
         this.cod = cod;
     }
 
+    public String getDescription() {
+        return weather.get(0).description;
+    }
+
+    public String getTemp() {
+        return Double.toString(main.temp).concat("°C");
+    }
+
+    public int getActualId() {return weather.get(0).id;}
+
+    public long getSunrise() {return sys.sunrise;}
+
+    public long getSunset() {return sys.sunset;}
+
     public class Clouds {
 
         @SerializedName("all")

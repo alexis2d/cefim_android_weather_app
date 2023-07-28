@@ -15,9 +15,11 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +49,32 @@ public class FavoriteActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
+      ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT)
+      {
+          @Override
+          public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull
+          RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+              return false;
+          }
+          @Override
+          public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int
+                  direction) {
+              CityApi removedCity = ((FavoriteAdapter.ViewHolder) viewHolder).mCityApi;
+              int index = mCitiesApi.indexOf(removedCity);
+              mCitiesApi.remove(index);
+              Util.saveFavouriteCities(mContext, mCitiesApi);
+              mAdapter.notifyDataSetChanged();
+              Snackbar.make(viewHolder.itemView, removedCity.getName() + " est supprimé", Snackbar.LENGTH_LONG).setAction("Annuler", new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      mCitiesApi.add(index,removedCity);
+                      Util.saveFavouriteCities(mContext, mCitiesApi);
+                      mAdapter.notifyDataSetChanged();
+                  }
+              }).show();
+          }
+      });
     private Context mContext;
 
     @Override
@@ -56,8 +84,6 @@ public class FavoriteActivity extends AppCompatActivity {
 
         binding = ActivityFavoriteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        Bundle extras = getIntent().getExtras();
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
@@ -88,6 +114,7 @@ public class FavoriteActivity extends AppCompatActivity {
         });
 
         mRecyclerView = binding.includeMyRecyclerView.myRecyclerView;
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);

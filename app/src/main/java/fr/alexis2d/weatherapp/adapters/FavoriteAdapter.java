@@ -54,7 +54,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnLongClickListener(mOnLongClickListener);
+            //view.setOnLongClickListener(mOnLongClickListener);
             view.setOnClickListener(mOnClickListener);
             view.setTag(this);
             mLayoutFavoriteCity = view.findViewById(R.id.layout_favorite_city);

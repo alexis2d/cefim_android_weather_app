@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private Context mContext;
+    private Location mLocation;
     private LocationManager mLocationManager;
     private LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -71,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            Location location = getLocation();
+            mLocation = getLocation();
             binding.textNoConnexion.setVisibility(View.GONE);
-            if (location != null) {
-                getCityByLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            if (mLocation != null) {
+                getCityByLocation(String.valueOf(mLocation.getLatitude()), String.valueOf(mLocation.getLongitude()));
                 binding.textViewNoLocation.setVisibility(View.GONE);
             }
         } else {
@@ -103,15 +104,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onClickButtonMap(View v) {
+        Intent intent = new Intent(mContext, MapsActivity.class);
+        intent.putExtra("location",mLocation);
+        startActivity(intent);
+    }
+
     public void onClickButtonFavorite(View v) {
-        Intent intent = new Intent(this, FavoriteActivity.class);
+        Intent intent = new Intent(mContext, FavoriteActivity.class);
         startActivity(intent);
     }
 
     public void onClickButtonGetLocation(View v) {
-        Location location = getLocation();
-        if (location != null) {
-            getCityByLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+        mLocation = getLocation();
+        if (mLocation != null) {
+            getCityByLocation(String.valueOf(mLocation.getLatitude()), String.valueOf(mLocation.getLongitude()));
             binding.textViewNoLocation.setVisibility(View.GONE);
         }
     }
@@ -126,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissions, Util.REQUEST_CODE);
             return null;
         } else {
-            Log.d("location_test","test");
             binding.buttonGetLocation.setVisibility(View.GONE);
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
             return mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

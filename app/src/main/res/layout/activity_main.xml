@@ -103,6 +103,21 @@
         android:text="@string/get_location" />
 
     <Button
+        android:id="@+id/button_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rect_button"
+        android:onClick="onClickButtonMap"
+        android:text="@string/google_map" />
+
+    <Button
         android:id="@+id/button_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

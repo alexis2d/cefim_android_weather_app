@@ -5,6 +5,7 @@
     <string name="city_temp">75.2°F</string>
     <string name="favorite">Favorite</string>
     <string name="get_location">Get your location</string>
+    <string name="google_map">Go to Map</string>
     <string name="no_location">No Location</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="onclick1">Click on button 1</string>
@@ -18,4 +19,5 @@
     <string name="cancel">Cancel</string>
     <string name="add_city">Add a city</string>
     <string name="del_city">Delete a city</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

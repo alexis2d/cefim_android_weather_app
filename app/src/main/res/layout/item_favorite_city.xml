@@ -8,6 +8,7 @@
     android:orientation="horizontal">
 
     <LinearLayout android:layout_height="match_parent"
+        android:id="@+id/layout_favorite_city"
         android:layout_width="wrap_content"
         android:layout_gravity="start"
         android:gravity="center"

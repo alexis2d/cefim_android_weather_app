@@ -6,6 +6,7 @@
     <string name="city_temp">24°C</string>
     <string name="favorite">Favoris</string>
     <string name="get_location">Géolocalisation</string>
+    <string name="google_map">Voir la carte</string>
     <string name="no_location">Pas de géolocalisation</string>
     <string name="no_internet">Pas de connexion Internet</string>
     <string name="onclick1">Clic sur bouton 1</string>
@@ -19,4 +20,5 @@
     <string name="cancel">Retour</string>
     <string name="add_city">Ajouter une ville</string>
     <string name="del_city">Supprimer une ville</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

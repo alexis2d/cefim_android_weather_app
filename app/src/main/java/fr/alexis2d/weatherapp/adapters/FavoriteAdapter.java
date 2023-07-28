@@ -54,7 +54,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         public ViewHolder(View view) {
             super(view);
-            //view.setOnLongClickListener(mOnLongClickListener);
             view.setOnClickListener(mOnClickListener);
             view.setTag(this);
             mLayoutFavoriteCity = view.findViewById(R.id.layout_favorite_city);
@@ -64,30 +63,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             mTextViewDescription = view.findViewById(R.id.text_view_item_description);
         }
     }
-
-    private final View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            ViewHolder holder = (ViewHolder) v.getTag();
-            final CityApi city = holder.mCityApi;
-            final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(R.string.del_city);
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mCitiesApi.remove(city);
-                    Util.saveFavouriteCities(mContext, mCitiesApi);
-                    notifyDataSetChanged();
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-
-            builder.create().show();
-            return false;
-        }
-    };
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override

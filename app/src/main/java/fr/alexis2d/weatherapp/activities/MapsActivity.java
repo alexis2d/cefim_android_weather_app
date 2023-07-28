@@ -1,5 +1,6 @@
 package fr.alexis2d.weatherapp.activities;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -22,17 +23,10 @@ import fr.alexis2d.weatherapp.R;
 import fr.alexis2d.weatherapp.databinding.ActivityMapsBinding;
 import fr.alexis2d.weatherapp.utils.Util;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity  {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private LocationManager mLocationManager;
-    private LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            // Récupération des données pour les coordonnées
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this::onMapReady);
     }
 
     /**
@@ -56,14 +50,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Bundle extras = getIntent().getExtras();
         Location location = (Location) extras.get("location");
-        LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng city = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(city).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(city));
     }
 
 }

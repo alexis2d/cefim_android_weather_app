@@ -64,14 +64,11 @@ public class FavoriteActivity extends AppCompatActivity {
               int index = mCitiesApi.indexOf(removedCity);
               mCitiesApi.remove(index);
               Util.saveFavouriteCities(mContext, mCitiesApi);
-              mAdapter.notifyDataSetChanged();
-              Snackbar.make(viewHolder.itemView, removedCity.getName() + " est supprimé", Snackbar.LENGTH_LONG).setAction("Annuler", new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                      mCitiesApi.add(index,removedCity);
-                      Util.saveFavouriteCities(mContext, mCitiesApi);
-                      mAdapter.notifyDataSetChanged();
-                  }
+              mAdapter.notifyItemRemoved(index);
+              Snackbar.make(viewHolder.itemView, removedCity.getName() + " " + getText(R.string.removed), Snackbar.LENGTH_LONG).setAction(R.string.cancel, v -> {
+                  mCitiesApi.add(index,removedCity);
+                  Util.saveFavouriteCities(mContext, mCitiesApi);
+                  mAdapter.notifyItemInserted(index);
               }).show();
           }
       });
@@ -85,32 +82,24 @@ public class FavoriteActivity extends AppCompatActivity {
         binding = ActivityFavoriteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
-        toolBarLayout.setTitle(getTitle());
-
         mContext = this;
 
         FloatingActionButton searchButton = binding.searchButton;
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_add_favorite, null);
-                builder.setView(v);
+        searchButton.setOnClickListener(view -> {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_add_favorite, null);
+            builder.setView(v);
 
-                final EditText editTextCity = v.findViewById(R.id.edit_text_dialog_city);
-                builder.setPositiveButton(android.R.string.yes, (dialog, id) -> {
-                    if (editTextCity.getText().toString().length() > 0) {
-                        updateWeatherDataCityName(editTextCity.getText().toString());
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
-                });
+            final EditText editTextCity = v.findViewById(R.id.edit_text_dialog_city);
+            builder.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+                if (editTextCity.getText().toString().length() > 0) {
+                    updateWeatherDataCityName(editTextCity.getText().toString());
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
+            });
 
-                builder.create().show();
-            }
+            builder.create().show();
         });
 
         mRecyclerView = binding.includeMyRecyclerView.myRecyclerView;

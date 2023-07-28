@@ -6,7 +6,7 @@
     <string name="favorite">Favorite</string>
     <string name="get_location">Get your location</string>
     <string name="google_map">Go to Map</string>
-    <string name="no_location">No Location</string>
+    <string name="no_location">No Location found</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="onclick1">Click on button 1</string>
     <string name="onclick2">Click on button 2</string>
@@ -20,4 +20,5 @@
     <string name="add_city">Add a city</string>
     <string name="del_city">Delete a city</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="removed">has been removed from favorites.</string>
 </resources>

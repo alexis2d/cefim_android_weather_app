@@ -154,7 +154,8 @@ public class CityApi {
     }
 
     public String getDescription() {
-        return weather.get(0).description;
+        String description = weather.get(0).description;
+        return description.substring(0, 1).toUpperCase() + description.substring(1);
     }
 
     public String getTemp() {
